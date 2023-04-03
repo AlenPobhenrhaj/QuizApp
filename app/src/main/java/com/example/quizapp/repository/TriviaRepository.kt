@@ -10,7 +10,6 @@ class TriviaRepository @Inject constructor (
     )
 
 {
-
     suspend fun getTriviaQuestions(
         amount: Int,
         category: Int? = null,
