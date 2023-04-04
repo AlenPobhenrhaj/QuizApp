@@ -5,11 +5,17 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
+
 }
 
 android {
     namespace 'com.example.quizapp'
     compileSdk 33
+
+    //binding enabled
+    viewBinding {
+        enabled = true
+    }
 
     defaultConfig {
         applicationId "com.example.quizapp"
@@ -34,16 +40,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    //viewBinding
-    viewBinding {
-        enabled = true
-    }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -60,17 +61,31 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-    implementation 'androidx.activity:activity-ktx:1.4.1'
+    def lifecycle_version = "2.6.1"
 
-    //Hilt
-    implementation 'com.google.dagger:hilt-android:2.42'
-    kapt 'com.google.dagger:hilt-android-compiler:2.42'
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+
+    //ViewPager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'me.relex:circleindicator:2.1.6'
 
     //Navigation Components
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.5.3")
+
+    implementation('org.jetbrains.kotlin:kotlin-stdlib:1.8.10')
+    implementation('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10')
+
+    //Hilt
+    implementation 'com.google.dagger:hilt-android:2.42'
+    kapt 'com.google.dagger:hilt-android-compiler:2.42'
+
 }

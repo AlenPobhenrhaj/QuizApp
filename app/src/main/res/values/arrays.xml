@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>Geography</item>
+        <item>Film &amp; TV</item>
+        <item>General Knowledge</item>
+        <item>Music</item>
+        <item>Sport &amp; Leisure</item>
+        <item>Society &amp; Culture</item>
+    </string-array>
+</resources>

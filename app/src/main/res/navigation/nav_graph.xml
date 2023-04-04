@@ -1,13 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/quizFragment">
+    app:startDestination="@id/selectionFragment">
+
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="com.example.quizapp.ui.SelectionFragment"
+        tools:layout="@layout/fragment_selection">
+        <action
+            android:id="@+id/action_selectionFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/quizFragment"
         android:name="com.example.quizapp.ui.QuizFragment"
-        android:label="Quiz Fragment"
         tools:layout="@layout/fragment_quiz">
         <action
             android:id="@+id/action_quizFragment_to_resultFragment"
@@ -17,6 +26,9 @@
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.quizapp.ui.ResultFragment"
-        android:label="Result Fragment"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result">
+        <action
+            android:id="@+id/action_resultFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+    </fragment>
 </navigation>

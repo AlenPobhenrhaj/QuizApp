@@ -1,9 +1,8 @@
 package com.example.quizapp.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.quizapp.model.Questions
+import com.example.quizapp.model.QuestionsItem
 import com.example.quizapp.repository.TriviaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -17,14 +16,14 @@ class QuizViewModel @Inject constructor(
     private val triviaRepository: TriviaRepository
 ) : ViewModel() {
 
-    private val _triviaQuestions = MutableLiveData<List<Questions>>()
-    val triviaQuestions: LiveData<List<Questions>> = _triviaQuestions
+    private val _triviaQuestions = MutableLiveData<List<QuestionsItem>>()
+    val triviaQuestions: MutableLiveData<List<QuestionsItem>> = _triviaQuestions
 
     private val viewModelScope = CoroutineScope(Dispatchers.IO)
 
     fun fetchTriviaQuestions(
         amount: Int,
-        category: Int? = null,
+        category: String? = null,
         difficulty: String? = null,
         type: String? = null
     ) {
