@@ -12,7 +12,6 @@ import com.example.quizapp.model.QuestionsItem
 import com.example.quizapp.utils.Resource
 import com.example.quizapp.viewmodel.QuizViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuizFragment : Fragment() {
@@ -29,11 +28,12 @@ class QuizFragment : Fragment() {
     ): View {
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
 
-        val selectedCategory = arguments?.getInt("selectedCategory") ?: "Default Category"
-        val selectedDifficulty = arguments?.getString("selectedDifficulty") ?: "1"
+        val selectedCategory = arguments?.getString("selectedCategory") ?: ""
+        val selectedDifficulty = arguments?.getString("selectedDifficulty") ?: ""
+        val selectedCategoryID = arguments?.getInt("selectedCategoryID") ?: 0
 
         // Fetch questions based on selectedCategory and selectedDifficulty
-        viewModel.fetchQuestions(selectedCategory as Int, selectedDifficulty)
+        viewModel.fetchQuestions(selectedCategoryID, selectedDifficulty)
 
         // Observe quizQuestions LiveData and update UI accordingly
         viewModel.quizQuestions.observe(viewLifecycleOwner) { resource ->
@@ -112,7 +112,7 @@ class QuizFragment : Fragment() {
 
         currentQuestionIndex++
 
-        if (currentQuestionIndex < viewModel.quizQuestions.value?.resourceData?.size ?: 0) {
+        if (currentQuestionIndex < (viewModel.quizQuestions.value?.resourceData?.size ?: 0)) {
             setupQuestion(viewModel.quizQuestions.value?.resourceData?.get(currentQuestionIndex)!!)
         } else {
             Toast.makeText(requireContext(), "Quiz Completed!", Toast.LENGTH_SHORT).show()

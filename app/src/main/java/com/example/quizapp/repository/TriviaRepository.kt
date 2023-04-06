@@ -11,12 +11,11 @@ class TriviaRepository @Inject constructor (
 {
     suspend fun getTriviaQuestions(
         amount: Int,
-        category: String? = null,
+        category: Int? = null,
         difficulty: String? = null,
         type: String? = null
-    ): List<QuestionsItem>
-    {
-        val response = apiService.getTriviaQuestions(amount, category, difficulty, type)
+    ): List<QuestionsItem> {
+        val response = apiService.getTriviaQuestions(amount, category?.toString(), difficulty, type)
         if (response.isSuccessful) {
             return response.body() ?: emptyList()
         } else {

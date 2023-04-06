@@ -30,12 +30,16 @@ class MainActivity : AppCompatActivity() {
         // Set up the start quiz button
         binding.startQuizButton.setOnClickListener {
             val selectedCategory = binding.categorySpinner.selectedItem.toString()
-            val selectedDifficulty = binding.difficultySlider.value.toString()
+            val selectedDifficulty = when (binding.difficultySlider.value.toInt()) {
+                1 -> "easy"
+                2 -> "medium"
+                else -> "hard"
+            }
 
-            // Pass the selected category and difficulty to QuizFragment
             val bundle = Bundle().apply {
                 putString("selectedCategory", selectedCategory)
                 putString("selectedDifficulty", selectedDifficulty)
+                putInt("selectedCategoryID", getCategoryID(selectedCategory))
             }
 
             // Start QuizFragment
@@ -45,6 +49,20 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container, quizFragment)
                 .addToBackStack(null)
                 .commit()
+        }
+    }
+
+    private fun getCategoryID(categoryName: String): Int {
+        return when (categoryName) {
+            "History" -> 1
+            "General Knowledge" -> 2
+            "Music" -> 3
+            "Science" -> 4
+            "Society & Culture" -> 5
+            "Sport & Leisure" -> 6
+            "Geography" -> 7
+            // Add the other categories here
+            else -> 0
         }
     }
 

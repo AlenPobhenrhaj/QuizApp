@@ -20,8 +20,13 @@ class QuizViewModel @Inject constructor(private val triviaRepository: TriviaRepo
     fun fetchQuestions(category: Int, difficulty: String) {
         viewModelScope.launch {
             _quizQuestions.value = Resource.Loading()
-            val response = triviaRepository.getTriviaQuestions(category, difficulty)
-            _quizQuestions.value = Resource.Success(response)
+
+            try {
+                val response = triviaRepository.getTriviaQuestions(10, category, difficulty)
+                _quizQuestions.value = Resource.Success(response)
+            } catch (exception: Exception) {
+                _quizQuestions.value = Resource.Error(exception.message ?: "An error occurred")
+            }
         }
     }
 }
