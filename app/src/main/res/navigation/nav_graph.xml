@@ -1,38 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainActivity">
-
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.quizapp.activity.MainActivity"
-        tools:layout="@layout/activity_main" />
+    app:startDestination="@id/quizFragment">
 
     <fragment
         android:id="@+id/quizFragment"
         android:name="com.example.quizapp.ui.QuizFragment"
-        tools:layout="@layout/fragment_quiz">
-
-        <action
-            android:id="@+id/action_quizFragment_to_resultFragment"
-            app:destination="@id/resultFragment">
-            <argument
-                android:name="correctAnswers"
-                app:argType="integer" />
-            <argument
-                android:name="totalQuestions"
-                app:argType="integer" />
-        </action>
-    </fragment>
+        android:label="quiz_fragment"
+        tools:layout="@layout/fragment_quiz" />
 
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.quizapp.ui.ResultFragment"
+        android:label="result_fragment"
         tools:layout="@layout/fragment_result">
         <action
             android:id="@+id/action_resultFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
     </fragment>
-
 </navigation>

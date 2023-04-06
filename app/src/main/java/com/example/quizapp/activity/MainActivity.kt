@@ -11,26 +11,21 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.quizapp.R
 import com.example.quizapp.databinding.ActivityMainBinding
+import com.example.quizapp.ui.QuizFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up the NavController
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-
         // Set up the ActionBar
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Set up the start quiz button
         binding.startQuizButton.setOnClickListener {
@@ -43,7 +38,13 @@ class MainActivity : AppCompatActivity() {
                 putString("selectedDifficulty", selectedDifficulty)
             }
 
-            navController.navigate(R.id.quizFragment, bundle)
+            // Start QuizFragment
+            val quizFragment = QuizFragment()
+            quizFragment.arguments = bundle
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, quizFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -53,15 +54,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            navController.navigateUp()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return super.onOptionsItemSelected(item)
     }
 }
+
+
