@@ -14,8 +14,9 @@ class TriviaRepository @Inject constructor (
         category: Int? = null,
         difficulty: String? = null,
         type: String? = null
-    ): List<QuestionsItem> {
-        val response = apiService.getTriviaQuestions(amount, category?.toString(), difficulty, type)
+    ): List<QuestionsItem>
+    {
+        val response = apiService.getTriviaQuestions(amount, category, difficulty, type)
         if (response.isSuccessful) {
             return response.body() ?: emptyList()
         } else {

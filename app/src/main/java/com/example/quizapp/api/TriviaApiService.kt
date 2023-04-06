@@ -9,7 +9,7 @@ interface TriviaApiService {
     @GET("api/questions")
     suspend fun getTriviaQuestions(
         @Query("amount") amount: Int,
-        @Query("category") category: String? = null,
+        @Query("category") category: Int? = null,
         @Query("difficulty") difficulty: String? = null,
         @Query("type") type: String? = null
     ): Response<List<QuestionsItem>>
