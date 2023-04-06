@@ -25,4 +25,3 @@ class QuizViewModel @Inject constructor(private val triviaRepository: TriviaRepo
         }
     }
 }
-
