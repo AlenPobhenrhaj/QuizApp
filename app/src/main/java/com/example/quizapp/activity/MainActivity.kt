@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             val bundle = Bundle().apply {
-                putString("selectedCategory", getCategoryName(selectedCategory))
+                putString("selectedCategory", selectedCategory)
                 putString("selectedDifficulty", selectedDifficulty)
-                putInt("selectedCategoryID", selectedCategory)
+                putInt("selectedCategoryID", getCategoryID(selectedCategory))
             }
 
             // Start QuizFragment
@@ -79,5 +79,4 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
-
 

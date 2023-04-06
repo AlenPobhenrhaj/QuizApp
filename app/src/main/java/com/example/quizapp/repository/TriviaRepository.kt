@@ -6,8 +6,7 @@ import javax.inject.Inject
 
 class TriviaRepository @Inject constructor (
     private val apiService: TriviaApiService
-    )
-
+)
 {
     suspend fun getTriviaQuestions(
         amount: Int,
