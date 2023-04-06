@@ -17,16 +17,20 @@ class QuizViewModel @Inject constructor(private val triviaRepository: TriviaRepo
     private val _quizQuestions = MutableLiveData<Resource<List<QuestionsItem>>>()
     val quizQuestions: LiveData<Resource<List<QuestionsItem>>> get() = _quizQuestions
 
-    fun fetchQuestions(category: Int, difficulty: String) {
+    fun fetchQuestions(categoryId: Int, difficulty: String)  {
         viewModelScope.launch {
             _quizQuestions.value = Resource.Loading()
-
             try {
-                val response = triviaRepository.getTriviaQuestions(10, category, difficulty)
+                val response = triviaRepository.getTriviaQuestions(
+                    amount = 10,
+                    category = categoryId,
+                    difficulty = difficulty.lowercase()
+                )
                 _quizQuestions.value = Resource.Success(response)
-            } catch (exception: Exception) {
-                _quizQuestions.value = Resource.Error(exception.message ?: "An error occurred")
+            } catch (e: Exception) {
+                _quizQuestions.value = e.message?.let { Resource.Error(it) }
             }
         }
+
     }
 }
