@@ -40,20 +40,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.startQuizButton.setOnClickListener {
-            val selectedCategoryName = binding.categorySpinner.selectedItem.toString()
+            val selectedCategory = binding.categorySpinner.selectedItem.toString()
             val selectedDifficulty = when (binding.difficultySlider.value.toInt()) {
                 1 -> "easy"
                 2 -> "medium"
                 3 -> "hard"
                 else -> ""
             }
+            val selectedCategoryID = resources.getIntArray(R.array.category_ids)[binding.categorySpinner.selectedItemPosition]
 
-            val selectedCategoryIDs = getCategoryIDs(selectedCategoryName)
 
             val bundle = Bundle().apply {
-                putString("selectedCategory", selectedCategoryName)
+                putString("selectedCategory", selectedCategory)
                 putString("selectedDifficulty", selectedDifficulty)
-                putIntegerArrayList("selectedCategoryIDs", ArrayList(selectedCategoryIDs))
+                putInt("selectedCategoryID", selectedCategoryID)
             }
 
             supportFragmentManager.beginTransaction()
