@@ -26,8 +26,8 @@ class QuizFragment : Fragment() {
     ): View {
         binding = FragmentQuizBinding.inflate(inflater, container, false)
 
-       /* val selectedCategoryIDs = arguments?.getIntegerArrayList("selectedCategoryIDs") ?: emptyList()
-        viewModel.fetchQuestions(selectedCategoryIDs, selectedDifficulty)*/
+        /* val selectedCategoryIDs = arguments?.getIntegerArrayList("selectedCategoryIDs") ?: emptyList()
+         viewModel.fetchQuestions(selectedCategoryIDs, selectedDifficulty)*/
 
         val selectedDifficulty = arguments?.getString("selectedDifficulty") ?: ""
         val selectedCategoryIDs = arguments?.getIntegerArrayList("selectedCategoryIDs")?.toList() ?: emptyList()
