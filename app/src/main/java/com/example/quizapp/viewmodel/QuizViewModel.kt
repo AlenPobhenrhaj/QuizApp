@@ -12,25 +12,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class QuizViewModel @Inject constructor(private val triviaRepository: TriviaRepository) : ViewModel() {
+class QuizViewModel @Inject constructor(
+    private val repository: TriviaRepository
+) : ViewModel() {
 
     private val _quizQuestions = MutableLiveData<Resource<List<QuestionsItem>>>()
-    val quizQuestions: LiveData<Resource<List<QuestionsItem>>> get() = _quizQuestions
+    val quizQuestions: LiveData<Resource<List<QuestionsItem>>> = _quizQuestions
 
-    fun fetchQuestions(categoryId: Int, difficulty: String)  {
+    fun fetchQuestions(selectedCategoryIDs: List<Int>, selectedDifficulty: String) {
+        _quizQuestions.value = Resource.Loading()
         viewModelScope.launch {
-            _quizQuestions.value = Resource.Loading()
             try {
-                val response = triviaRepository.getTriviaQuestions(
-                    amount = 10,
-                    category = categoryId,
-                    difficulty = difficulty.lowercase()
-                )
-                _quizQuestions.value = Resource.Success(response)
+                val questions = repository.getTriviaQuestions(selectedCategoryIDs, selectedDifficulty)
+                _quizQuestions.value = Resource.Success(questions)
             } catch (e: Exception) {
-                _quizQuestions.value = e.message?.let { Resource.Error(it) }
+                _quizQuestions.value = Resource.Error(e.message ?: "An unknown error occurred")
             }
         }
-
     }
 }

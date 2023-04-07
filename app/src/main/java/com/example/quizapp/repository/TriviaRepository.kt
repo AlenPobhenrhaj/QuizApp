@@ -4,23 +4,23 @@ import com.example.quizapp.api.TriviaApiService
 import com.example.quizapp.model.QuestionsItem
 import javax.inject.Inject
 
-class TriviaRepository @Inject constructor (
+class TriviaRepository @Inject constructor(
     private val apiService: TriviaApiService
-)
-{
+) {
     suspend fun getTriviaQuestions(
-        amount: Int,
-        category: Int? = null,
+        categoryIDs: List<Int>,
         difficulty: String? = null,
         type: String? = null
-    ): List<QuestionsItem>
-    {
-        val response = apiService.getTriviaQuestions(amount, category, difficulty, type)
-        if (response.isSuccessful) {
-            return response.body() ?: emptyList()
-        } else {
-            throw Exception("Error fetching trivia questions: ${response.message()}")
+    ): List<QuestionsItem> {
+        val questions = mutableListOf<QuestionsItem>()
+        for (categoryID in categoryIDs) {
+            val response = apiService.getTriviaQuestions(1, categoryID, difficulty, type)
+            if (response.isSuccessful) {
+                response.body()?.let { questions.addAll(it) }
+            } else {
+                throw Exception("Error fetching trivia questions: ${response.message()}")
+            }
         }
-
+        return questions
     }
 }

@@ -1,18 +1,13 @@
 package com.example.quizapp.activity
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.quizapp.R
 import com.example.quizapp.databinding.ActivityMainBinding
 import com.example.quizapp.ui.QuizFragment
 import dagger.hilt.android.AndroidEntryPoint
+import android.widget.ArrayAdapter
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -24,59 +19,57 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up the ActionBar
-        setSupportActionBar(binding.toolbar)
+        // Set up the spinner for selecting a category
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.categories,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.categorySpinner.adapter = adapter
+        }
 
-        // Set up the start quiz button
+        // Set up the slider for selecting difficulty
+        binding.difficultySlider.addOnChangeListener { _, value, _ ->
+            binding.difficultyText.text = when (value.toInt()) {
+                1 -> "Easy"
+                2 -> "Medium"
+                3 -> "Hard"
+                else -> "Any"
+            }
+        }
+
         binding.startQuizButton.setOnClickListener {
             val selectedCategory = binding.categorySpinner.selectedItem.toString()
             val selectedDifficulty = when (binding.difficultySlider.value.toInt()) {
                 1 -> "easy"
                 2 -> "medium"
-                else -> "hard"
+                3 -> "hard"
+                else -> ""
             }
 
             val bundle = Bundle().apply {
                 putString("selectedCategory", selectedCategory)
                 putString("selectedDifficulty", selectedDifficulty)
-                putInt("selectedCategoryID", getCategoryID(selectedCategory))
+                putIntegerArrayList("selectedCategoryIDs", ArrayList(getCategoryID(selectedCategory)))
             }
 
-            // Start QuizFragment
-            val quizFragment = QuizFragment()
-            quizFragment.arguments = bundle
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, quizFragment)
-                .addToBackStack(null)
+                .replace(R.id.fragment_container, QuizFragment::class.java, bundle)
                 .commit()
         }
     }
 
-    private fun getCategoryID(categoryName: String): Int {
-        return when (categoryName) {
-            "History" -> 1
-            "General Knowledge" -> 2
-            "Music" -> 3
-            "Science" -> 4
-            "Society & Culture" -> 5
-            "Sport & Leisure" -> 6
-            "Geography" -> 7
-            // Add the other categories here
-            else -> 0
-        }
-    }
+    private fun getCategoryID(categoryName: String): List<Int> {
+        val categories = resources.getStringArray(R.array.categories)
+        val categoryIDs = resources.getStringArray(R.array.category_ids)
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
+        val index = categories.indexOf(categoryName)
+        return if (index >= 0) {
+            categoryIDs[index].split(",").map { it.toInt() }
+        } else {
+            listOf(0)
         }
-        return super.onOptionsItemSelected(item)
     }
 }
 

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories">
+        <item>General Knowledge</item>
         <item>History</item>
         <item>Geography</item>
-        <item>Film &amp; TV</item>
-        <item>General Knowledge</item>
+        <item>Film &amp; Tv</item>
         <item>Music</item>
         <item>Sport &amp; Leisure</item>
-        <item>Society &amp; Culture</item>
+        <item>Society &amp; Culture </item>
+    </string-array>
+
+    <string-array name="category_ids">
+        <item>9</item>
+        <item>23</item>
+        <item>22</item>
+        <item>11,14</item>
+        <item>12</item>
+        <item>21</item>
+        <item>26</item>
+        <!-- Add corresponding category IDs here -->
     </string-array>
 </resources>

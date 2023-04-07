@@ -16,38 +16,34 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class QuizFragment : Fragment() {
 
-    private var _binding: FragmentQuizBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentQuizBinding
     private val viewModel: QuizViewModel by viewModels()
     private var currentQuestionIndex = 0
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentQuizBinding.inflate(inflater, container, false)
+        binding = FragmentQuizBinding.inflate(inflater, container, false)
 
-        val selectedCategory = arguments?.getString("selectedCategory") ?: ""
+        val selectedCategoryIDs = arguments?.getIntegerArrayList("selectedCategoryIDs") ?: emptyList()
         val selectedDifficulty = arguments?.getString("selectedDifficulty") ?: ""
-        val selectedCategoryID = arguments?.getInt("selectedCategoryID") ?: 0
-
-        // Fetch questions based on selectedCategory and selectedDifficulty
-        viewModel.fetchQuestions(selectedCategoryID, selectedDifficulty)
+        viewModel.fetchQuestions(selectedCategoryIDs, selectedDifficulty)
 
         // Observe quizQuestions LiveData and update UI accordingly
         viewModel.quizQuestions.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-
                 is Resource.Success -> {
                     // Display the first question and its answers
                     val question = resource.resourceData?.get(0)
-                    question?.let {
-                        setupQuestion(it)
-                    }
-
                     binding.questionText.text = question?.question
                     // Update the UI with the question's answers
+                    question?.incorrectAnswers?.let { answers ->
+                        binding.optionA.text = answers[0]
+                        binding.optionB.text = answers[1]
+                        binding.optionC.text = answers[2]
+                        binding.optionD.text = answers[3]
+                    }
                 }
                 is Resource.Error -> {
                     Toast.makeText(
@@ -84,9 +80,7 @@ class QuizFragment : Fragment() {
             // Handle submit button click
         }
 
-
         return binding.root
-
     }
 
     private fun setupQuestion(question: QuestionsItem) {
@@ -117,11 +111,5 @@ class QuizFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Quiz Completed!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
