@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.startQuizButton.setOnClickListener {
-            val selectedCategory = binding.categorySpinner.selectedItem.toString()
+            val selectedCategoryName = binding.categorySpinner.selectedItem.toString()
             val selectedDifficulty = when (binding.difficultySlider.value.toInt()) {
                 1 -> "easy"
                 2 -> "medium"
@@ -48,10 +48,12 @@ class MainActivity : AppCompatActivity() {
                 else -> ""
             }
 
+            val selectedCategoryIDs = getCategoryIDs(selectedCategoryName)
+
             val bundle = Bundle().apply {
-                putString("selectedCategory", selectedCategory)
+                putString("selectedCategory", selectedCategoryName)
                 putString("selectedDifficulty", selectedDifficulty)
-                putIntegerArrayList("selectedCategoryIDs", ArrayList(getCategoryID(selectedCategory)))
+                putIntegerArrayList("selectedCategoryIDs", ArrayList(selectedCategoryIDs))
             }
 
             supportFragmentManager.beginTransaction()
@@ -60,15 +62,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCategoryID(categoryName: String): List<Int> {
-        val categories = resources.getStringArray(R.array.categories)
-        val categoryIDs = resources.getStringArray(R.array.category_ids)
-
-        val index = categories.indexOf(categoryName)
-        return if (index >= 0) {
-            categoryIDs[index].split(",").map { it.toInt() }
-        } else {
-            listOf(0)
+    private fun getCategoryIDs(categoryName: String): List<Int> {
+        return when (categoryName) {
+            "General Knowledge" -> listOf(9)
+            "History" -> listOf(23)
+            "Geography" -> listOf(22)
+            "Film & Tv" -> listOf(11, 14)
+            "Music" -> listOf(12)
+            "Sport & Leisure" -> listOf(21)
+            "Society & Culture" -> listOf(13)
+            else -> emptyList()
         }
     }
 }
