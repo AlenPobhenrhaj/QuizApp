@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             "General Knowledge" -> listOf(9)
             "History" -> listOf(23)
             "Geography" -> listOf(22)
-            "Film & Tv" -> listOf(11, 14)
+            "Film & Tv" -> listOf(11)
             "Music" -> listOf(12)
             "Sport & Leisure" -> listOf(21)
             "Society & Culture" -> listOf(13)

@@ -41,12 +41,17 @@ class QuizFragment : Fragment() {
                     val question = resource.resourceData?.get(0)
                     binding.questionText.text = question?.question
                     // Update the UI with the question's answers
-                    question?.incorrectAnswers?.let { answers ->
+                    question?.let {
+                        val answers = it.incorrectAnswers.toMutableList()
+                        answers.add(it.correctAnswer)
+                        answers.shuffle()
+
                         binding.optionA.text = answers[0]
                         binding.optionB.text = answers[1]
                         binding.optionC.text = answers[2]
                         binding.optionD.text = answers[3]
                     }
+
                 }
                 is Resource.Error -> {
                     Toast.makeText(
